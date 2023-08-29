@@ -10,14 +10,13 @@ import {
   TextInput as TextInputPaper,
 } from "react-native-paper";
 import { DefaultColors } from "../interfaces/defaultColors.interface";
-import { Dimensions } from "react-native";
 import colorsUtil from "../utils/colors.util";
 
 type CoverProps = {
   width?: string;
   height?: string;
   spacing?: string;
-  circle?: string;
+  circle?: boolean;
   border?: string;
 };
 
@@ -44,6 +43,7 @@ type TextProps = {
   bold?: boolean;
   spacing?: string;
   hasPadding?: boolean;
+  removePaddingBottom?: boolean;
 };
 
 type BoxProps = {
@@ -87,6 +87,7 @@ export const Cover = styled(ImageBackground)<CoverProps>`
   border-radius: ${(props: CoverProps) => (props.circle ? props.width : "3px")};
   border: ${(props: CoverProps) => props.border || "none"};
   background-color: ${themeConfig.colors.muted};
+  overflow: hidden;
 `;
 
 export const GradientView = styled(LinearGradient)<LinearGradientProps>`
@@ -120,7 +121,12 @@ export const Text = styled(TextPaper)<TextProps>`
   font-size: ${(props) => (props.small ? "13px" : "17px")};
   font-family: ${(props) => (props.bold ? "Ubuntu-Bold" : "Ubuntu-Regular")};
   margin: ${(props) => props.spacing || 0};
-  padding: ${(props) => (props.hasPadding ? "20px" : "0px")};
+  padding: ${(props) =>
+    props.hasPadding
+      ? !props.removePaddingBottom
+        ? "20px"
+        : "20px 20px 0 20px"
+      : "0px"};
 `;
 
 export const Box = styled.View<BoxProps>`
@@ -129,12 +135,15 @@ export const Box = styled.View<BoxProps>`
   flex-direction: ${(props) => props.direction || "row"};
   justify-content: ${(props) => props.justify || "flex-start"};
   align-items: ${(props) => props.align || "flex-start"};
-  width: ${(props) => props.width || `${Dimensions.get("window").width}px`};
+  width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "auto"};
   max-height: ${(props) => props.height || "auto"};
-  padding: ${(props) => (props.hasPadding ? "20px" : "0px")};
-  padding-bottom: ${(props) =>
-    props.removePaddingBottom ? "0px" : props.hasPadding ? "20px" : "0px"};
+  padding: ${(props) =>
+    props.hasPadding
+      ? !props.removePaddingBottom
+        ? "20px"
+        : "20px 20px 0 20px"
+      : "0px"};
   margin: ${(props) => props.spacing || 0};
   border-radius: ${(props) => props.radius || 0};
   background: ${(props) =>
@@ -147,7 +156,7 @@ export const Touchable = styled.TouchableOpacity<TouchableProps>`
   flex-direction: ${(props) => props.direction || "row"};
   justify-content: ${(props) => props.justify || "flex-start"};
   align-items: ${(props) => props.align || "flex-start"};
-  width: ${(props) => props.width || `${Dimensions.get("window").width}px`};
+  width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "auto"};
   padding: ${(props) => (props.hasPadding ? "20px" : "0px")};
   margin: ${(props) => props.spacing || 0};
@@ -181,7 +190,7 @@ export const Spacer = styled.View<{ size?: string }>`
 export const Button = styled(ButtonPaper).attrs<ButtonProps>((props) => ({
   buttonColor:
     themeConfig.colors[props.background as DefaultColors] || props.background,
-  width: props.block ? `${Dimensions.get("window").width}px` : "auto",
+  width: props.block ? "100%" : "auto",
   labelStyle: {
     color: themeConfig.colors[(props.textColor! as DefaultColors) || "light"],
     letterSpacing: 0,
