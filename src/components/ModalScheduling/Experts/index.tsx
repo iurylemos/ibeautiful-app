@@ -8,7 +8,7 @@ const ModalSchedulingExperts: React.FC = (): JSX.Element => {
       <Text bold color="dark" hasPadding removePaddingBottom>
         Gostaria de trocar o(a) especialistas?
       </Text>
-      <Box hasPadding>
+      <Box hasPadding removePaddingBottom>
         <Box align="center">
           <Cover
             width="45px"

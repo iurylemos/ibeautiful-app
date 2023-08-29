@@ -72,6 +72,7 @@ type TouchableProps = {
   background?: string;
   rounded?: string;
   border?: string;
+  removePaddingBottom?: boolean;
 };
 
 type ButtonProps = {
@@ -158,7 +159,12 @@ export const Touchable = styled.TouchableOpacity<TouchableProps>`
   align-items: ${(props) => props.align || "flex-start"};
   width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "auto"};
-  padding: ${(props) => (props.hasPadding ? "20px" : "0px")};
+  padding: ${(props) =>
+    props.hasPadding
+      ? !props.removePaddingBottom
+        ? "20px"
+        : "20px 20px 0 20px"
+      : "0px"};
   margin: ${(props) => props.spacing || 0};
   background: ${(props) =>
     themeConfig.colors[props.background! as DefaultColors] ||

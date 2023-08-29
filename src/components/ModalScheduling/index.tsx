@@ -1,12 +1,18 @@
 import React, { useCallback, useRef, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetScrollView,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { Dimensions } from "react-native";
 import ModalSchedulingHeader from "./Header";
 import ModalSchedulingSummary from "./Summary";
 import ModalSchedulingDateTime from "./DateTime";
 import ModalSchedulingExperts from "./Experts";
 import ModalSchedulingExpertsPicker from "./Experts/Picker";
+import ModalSchedulingPayment from "./Payment";
+import { Box, Button } from "../../styles";
+import themeConfig from "../../config/theme.config";
 
 const ModalScheduling: React.FC = (): JSX.Element => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -24,19 +30,38 @@ const ModalScheduling: React.FC = (): JSX.Element => {
       index={openModal ? 2 : 1}
       snapPoints={[1, 90, Dimensions.get("window").height - 30]}
       onChange={handleSheetChanges}
+      enableOverDrag={false}
+      // enableContentPanningGesture={false}
+      enablePanDownToClose={false}
     >
-      <>
-        <ScrollView
-          style={{ backgroundColor: "#fff" }}
+      <BottomSheetView enableFooterMarginAdjustment>
+        <BottomSheetScrollView
+          contentContainerStyle={{
+            backgroundColor: "#fff",
+          }}
+          scrollToOverflowEnabled={true}
           stickyHeaderIndices={[0]}
+          showsVerticalScrollIndicator
         >
           <ModalSchedulingHeader />
           <ModalSchedulingSummary />
           <ModalSchedulingDateTime />
           <ModalSchedulingExperts />
-        </ScrollView>
+          <ModalSchedulingPayment />
+          <Box hasPadding>
+            <Button
+              icon="check"
+              background={themeConfig.colors.primary}
+              mode="contained"
+              block
+              uppercase={false}
+            >
+              Confirmar meu agendamento
+            </Button>
+          </Box>
+        </BottomSheetScrollView>
         <ModalSchedulingExpertsPicker />
-      </>
+      </BottomSheetView>
     </BottomSheet>
   );
 };
