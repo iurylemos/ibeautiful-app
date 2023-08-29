@@ -3,6 +3,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import ModalSchedulingHeader from "./Header";
 import ModalSchedulingSummary from "./Summary";
+import ModalSchedulingDateTime from "./DateTime";
 
 const ModalScheduling: React.FC = (): JSX.Element => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -24,6 +25,7 @@ const ModalScheduling: React.FC = (): JSX.Element => {
       <ScrollView style={{ backgroundColor: "#fff" }}>
         <ModalSchedulingHeader />
         <ModalSchedulingSummary />
+        <ModalSchedulingDateTime />
       </ScrollView>
     </BottomSheet>
   );
