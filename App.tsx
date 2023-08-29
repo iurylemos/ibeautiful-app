@@ -6,6 +6,8 @@ import { Provider as PaperProvider } from "react-native-paper";
 import store from "./src/store";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,9 +36,9 @@ const App = (): JSX.Element => {
   return (
     <StoreProvider store={store}>
       <PaperProvider>
-        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+        <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <Home />
-        </View>
+        </GestureHandlerRootView>
       </PaperProvider>
     </StoreProvider>
   );

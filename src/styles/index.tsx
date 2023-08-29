@@ -173,6 +173,11 @@ export const TextInput = styled(TextInputPaper).attrs({
   background: ${themeConfig.colors.light};
 `;
 
+export const Spacer = styled.View<{ size?: string }>`
+  width: 100%;
+  height: ${(props) => props.size || "10px"};
+`;
+
 export const Button = styled(ButtonPaper).attrs<ButtonProps>((props) => ({
   buttonColor:
     themeConfig.colors[props.background as DefaultColors] || props.background,
