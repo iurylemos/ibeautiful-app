@@ -1,9 +1,11 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import ModalSchedulingHeader from "./Header";
+import ModalSchedulingSummary from "./Summary";
 
 const ModalScheduling: React.FC = (): JSX.Element => {
+  const [openModal, setOpenModal] = useState<boolean>(false);
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
 
@@ -15,12 +17,13 @@ const ModalScheduling: React.FC = (): JSX.Element => {
     <BottomSheet
       ref={sheetRef}
       contentHeight={2}
-      index={1}
+      index={openModal ? 2 : 1}
       snapPoints={[1, 90, Dimensions.get("window").height - 30]}
       onChange={handleSheetChanges}
     >
       <ScrollView style={{ backgroundColor: "#fff" }}>
         <ModalSchedulingHeader />
+        <ModalSchedulingSummary />
       </ScrollView>
     </BottomSheet>
   );
