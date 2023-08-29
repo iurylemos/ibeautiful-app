@@ -11,6 +11,7 @@ import {
 } from "react-native-paper";
 import { DefaultColors } from "../interfaces/defaultColors.interface";
 import { Dimensions } from "react-native";
+import colorsUtil from "../utils/colors.util";
 
 type CoverProps = {
   width?: string;
@@ -156,6 +157,20 @@ export const Touchable = styled.TouchableOpacity<TouchableProps>`
     "transparent"};
   border-radius: ${(props) => props.rounded || 0};
   border: ${(props) => props.border || "none"};
+`;
+
+export const TextInput = styled(TextInputPaper).attrs({
+  mode: "outlined",
+  theme: {
+    colors: {
+      placeholder: colorsUtil.toAlpha(themeConfig.colors.muted, 30),
+    },
+  },
+})`
+  height: 45px;
+  width: 100%;
+  font-size: 15px;
+  background: ${themeConfig.colors.light};
 `;
 
 export const Button = styled(ButtonPaper).attrs<ButtonProps>((props) => ({

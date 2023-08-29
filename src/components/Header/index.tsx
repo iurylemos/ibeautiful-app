@@ -8,6 +8,7 @@ import {
   Box,
   Touchable,
   Button,
+  TextInput,
 } from "../../styles";
 import themeConfig from "../../config/theme.config";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -33,7 +34,12 @@ const Header = (): JSX.Element => {
       </Cover>
       <Box background="light" align="center" width={`${width}px`}>
         <Box hasPadding justify="space-between">
-          <Touchable width="50px" direction="column" align="center">
+          <Touchable
+            width="30px"
+            direction="column"
+            align="center"
+            spacing="0px 10px 0 0"
+          >
             <Icon name="phone" size={24} color={themeConfig.colors.muted} />
             <Text small spacing="10px 0 0">
               Ligar
@@ -69,6 +75,10 @@ const Header = (): JSX.Element => {
             Horários disponíveis
           </Text>
         </Box>
+      </Box>
+      <Box hasPadding direction="column" background="light" spacing="10px 0 0">
+        <Title small>Serviços (2)</Title>
+        <TextInput placeholder="Digite o nome do serviço..." />
       </Box>
     </>
   );
