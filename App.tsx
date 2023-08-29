@@ -2,24 +2,10 @@ import { useCallback } from "react";
 import { View } from "react-native";
 import Home from "./src/pages/Home";
 import { Provider as StoreProvider } from "react-redux";
-import {
-  Provider as PaperProvider,
-  DefaultTheme,
-  configureFonts,
-} from "react-native-paper";
+import { Provider as PaperProvider } from "react-native-paper";
 import store from "./src/store";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-
-const theme = {
-  ...DefaultTheme,
-  fonts: configureFonts({
-    config: {
-      fontFamily: "Ubuntu-Regular",
-      fontWeight: "normal",
-    },
-  }),
-};
 
 SplashScreen.preventAutoHideAsync();
 
@@ -47,11 +33,8 @@ const App = (): JSX.Element => {
 
   return (
     <StoreProvider store={store}>
-      <PaperProvider theme={theme}>
-        <View
-          style={{ flex: 1, backgroundColor: "red" }}
-          onLayout={onLayoutRootView}
-        >
+      <PaperProvider>
+        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <Home />
         </View>
       </PaperProvider>
