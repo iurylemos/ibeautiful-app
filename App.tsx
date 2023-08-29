@@ -21,6 +21,8 @@ const theme = {
   }),
 };
 
+SplashScreen.preventAutoHideAsync();
+
 const App = (): JSX.Element => {
   const [fontsLoaded] = useFonts({
     "Ubuntu-Bold": require("./src/assets/fonts/Ubuntu-Bold.ttf"),

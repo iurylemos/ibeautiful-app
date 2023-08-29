@@ -10,6 +10,7 @@ import {
   TextInput as TextInputPaper,
 } from "react-native-paper";
 import { DefaultColors } from "../interfaces/defaultColors.interface";
+import { Dimensions } from "react-native";
 
 type CoverProps = {
   width?: string;
@@ -42,6 +43,40 @@ type TextProps = {
   bold?: boolean;
   spacing?: string;
   hasPadding?: boolean;
+};
+
+type BoxProps = {
+  wrap?: string;
+  direction?: string;
+  justify?: string;
+  align?: string;
+  width?: string;
+  height?: string;
+  hasPadding?: boolean;
+  removePaddingBottom?: boolean;
+  spacing?: string;
+  radius?: string;
+  colors?: DefaultColors;
+  background?: string;
+};
+
+type TouchableProps = {
+  direction?: string;
+  justify?: string;
+  align?: string;
+  width?: string;
+  height?: string;
+  hasPadding?: boolean;
+  spacing?: string;
+  background?: string;
+  rounded?: string;
+  border?: string;
+};
+
+type ButtonProps = {
+  background: string;
+  block?: boolean;
+  textColor?: string;
 };
 
 export const Cover = styled(ImageBackground)<CoverProps>`
@@ -86,3 +121,49 @@ export const Text = styled(TextPaper)<TextProps>`
   margin: ${(props) => props.spacing || 0};
   padding: ${(props) => (props.hasPadding ? "20px" : "0px")};
 `;
+
+export const Box = styled.View<BoxProps>`
+  flex: 1;
+  flex-wrap: ${(props) => props.wrap || "nowrap"};
+  flex-direction: ${(props) => props.direction || "row"};
+  justify-content: ${(props) => props.justify || "flex-start"};
+  align-items: ${(props) => props.align || "flex-start"};
+  width: ${(props) => props.width || `${Dimensions.get("window").width}px`};
+  height: ${(props) => props.height || "auto"};
+  max-height: ${(props) => props.height || "auto"};
+  padding: ${(props) => (props.hasPadding ? "20px" : "0px")};
+  padding-bottom: ${(props) =>
+    props.removePaddingBottom ? "0px" : props.hasPadding ? "20px" : "0px"};
+  margin: ${(props) => props.spacing || 0};
+  border-radius: ${(props) => props.radius || 0};
+  background: ${(props) =>
+    themeConfig.colors[props.background! as DefaultColors] ||
+    props.background ||
+    "transparent"};
+`;
+
+export const Touchable = styled.TouchableOpacity<TouchableProps>`
+  flex-direction: ${(props) => props.direction || "row"};
+  justify-content: ${(props) => props.justify || "flex-start"};
+  align-items: ${(props) => props.align || "flex-start"};
+  width: ${(props) => props.width || `${Dimensions.get("window").width}px`};
+  height: ${(props) => props.height || "auto"};
+  padding: ${(props) => (props.hasPadding ? "20px" : "0px")};
+  margin: ${(props) => props.spacing || 0};
+  background: ${(props) =>
+    themeConfig.colors[props.background! as DefaultColors] ||
+    props.background ||
+    "transparent"};
+  border-radius: ${(props) => props.rounded || 0};
+  border: ${(props) => props.border || "none"};
+`;
+
+export const Button = styled(ButtonPaper).attrs<ButtonProps>((props) => ({
+  buttonColor:
+    themeConfig.colors[props.background as DefaultColors] || props.background,
+  width: props.block ? `${Dimensions.get("window").width}px` : "auto",
+  labelStyle: {
+    color: themeConfig.colors[(props.textColor! as DefaultColors) || "light"],
+    letterSpacing: 0,
+  },
+}))``;
