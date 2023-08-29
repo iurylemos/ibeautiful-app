@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+import { View } from "react-native";
 import Home from "./src/pages/Home";
 import { Provider as StoreProvider } from "react-redux";
 import {
@@ -6,64 +8,8 @@ import {
   configureFonts,
 } from "react-native-paper";
 import store from "./src/store";
-import themeConfig from "./src/config/theme.config";
-
-const fontConfig = {
-  web: {
-    regular: {
-      fontFamily: "sans-serif",
-      fontWeight: "normal",
-    },
-    medium: {
-      fontFamily: "sans-serif-medium",
-      fontWeight: "normal",
-    },
-    light: {
-      fontFamily: "sans-serif-light",
-      fontWeight: "normal",
-    },
-    thin: {
-      fontFamily: "sans-serif-thin",
-      fontWeight: "normal",
-    },
-  },
-  ios: {
-    regular: {
-      fontFamily: "sans-serif",
-      fontWeight: "normal",
-    },
-    medium: {
-      fontFamily: "sans-serif-medium",
-      fontWeight: "normal",
-    },
-    light: {
-      fontFamily: "sans-serif-light",
-      fontWeight: "normal",
-    },
-    thin: {
-      fontFamily: "sans-serif-thin",
-      fontWeight: "normal",
-    },
-  },
-  android: {
-    regular: {
-      fontFamily: "sans-serif",
-      fontWeight: "normal",
-    },
-    medium: {
-      fontFamily: "sans-serif-medium",
-      fontWeight: "normal",
-    },
-    light: {
-      fontFamily: "sans-serif-light",
-      fontWeight: "normal",
-    },
-    thin: {
-      fontFamily: "sans-serif-thin",
-      fontWeight: "normal",
-    },
-  },
-};
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
 const theme = {
   ...DefaultTheme,
@@ -76,10 +22,36 @@ const theme = {
 };
 
 const App = (): JSX.Element => {
+  const [fontsLoaded] = useFonts({
+    "Ubuntu-Bold": require("./src/assets/fonts/Ubuntu-Bold.ttf"),
+    "Ubuntu-BoldItalic": require("./src/assets/fonts/Ubuntu-BoldItalic.ttf"),
+    "Ubuntu-Italic": require("./src/assets/fonts/Ubuntu-Italic.ttf"),
+    "Ubuntu-Light": require("./src/assets/fonts/Ubuntu-Light.ttf"),
+    "Ubuntu-LightItalic": require("./src/assets/fonts/Ubuntu-LightItalic.ttf"),
+    "Ubuntu-Medium": require("./src/assets/fonts/Ubuntu-Medium.ttf"),
+    "Ubuntu-MediumItalic": require("./src/assets/fonts/Ubuntu-MediumItalic.ttf"),
+    "Ubuntu-Regular": require("./src/assets/fonts/Ubuntu-Regular.ttf"),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return <></>;
+  }
+
   return (
     <StoreProvider store={store}>
       <PaperProvider theme={theme}>
-        <Home />
+        <View
+          style={{ flex: 1, backgroundColor: "red" }}
+          onLayout={onLayoutRootView}
+        >
+          <Home />
+        </View>
       </PaperProvider>
     </StoreProvider>
   );
