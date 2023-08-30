@@ -17,7 +17,7 @@ import { InitialStateSalon } from "../../interfaces/store/initialStateSalon.inte
 
 const ModalScheduling: React.FC = (): JSX.Element => {
   const [currentSnap, setCurrentSnap] = useState<number>(0);
-  const { form } = useSelector(
+  const { form, scheduling, services } = useSelector(
     (state: { salonReducer: InitialStateSalon }) => state.salonReducer
   );
   const sheetRef = useRef<BottomSheet>(null);
@@ -46,7 +46,7 @@ const ModalScheduling: React.FC = (): JSX.Element => {
           stickyHeaderIndices={[0]}
         >
           <ModalSchedulingHeader />
-          <ModalSchedulingSummary />
+          <ModalSchedulingSummary scheduling={scheduling} services={services} />
           <ModalSchedulingDateTime />
           <ModalSchedulingExperts />
           <ModalSchedulingPayment />
