@@ -1,4 +1,4 @@
-import { ImageSourcePropType, Dimensions, Linking } from "react-native";
+import { ImageSourcePropType, Dimensions, Linking, Share } from "react-native";
 import {
   Cover,
   GradientView,
@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { InitialStateSalon } from "../../interfaces/store/initialStateSalon.interface";
 
 const Header = (): JSX.Element => {
-  const { salon } = useSelector(
+  const { salon, services } = useSelector(
     (state: { salonReducer: InitialStateSalon }) => state.salonReducer
   );
 
@@ -34,7 +34,9 @@ const Header = (): JSX.Element => {
           hasPadding
           justify="flex-end"
         >
-          <Badge color="success">ABERTO</Badge>
+          <Badge color={salon.isOpened ? "success" : "danger"}>
+            {`${salon.isOpened ? "ABERTO" : "FECHADO"}`}
+          </Badge>
           <Title color="light">{salon.name}</Title>
           <Text color="light">
             {salon.address.city} • {salon.distance.toFixed(2)}kms
@@ -77,7 +79,16 @@ const Header = (): JSX.Element => {
               Visitar
             </Text>
           </Touchable>
-          <Touchable width="50px" direction="column" align="center">
+          <Touchable
+            width="50px"
+            direction="column"
+            align="center"
+            onPress={() => {
+              Share.share({
+                message: `${salon.name} - iBeatiful`,
+              });
+            }}
+          >
             <Icon name="share" size={24} color={themeConfig.colors.muted} />
             <Text small spacing="10px 0 0">
               Enviar
@@ -99,7 +110,7 @@ const Header = (): JSX.Element => {
         </Box>
       </Box>
       <Box hasPadding direction="column" background="light" spacing="10px 0 0">
-        <Title small>Serviços (2)</Title>
+        <Title small>Serviços ({services.length})</Title>
         <TextInput placeholder="Digite o nome do serviço..." />
       </Box>
     </>

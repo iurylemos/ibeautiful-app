@@ -6,6 +6,7 @@ export interface Salon {
   cover: string;
   phone: string;
   distance: number;
+  isOpened: boolean;
 }
 
 interface Address {

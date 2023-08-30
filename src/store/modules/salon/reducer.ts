@@ -6,12 +6,14 @@ import { InitialStateSalon } from "../../../interfaces/store/initialStateSalon.i
 
 type Action = {
   type: string;
-  clients?: [];
-  salon?: {};
-  payload: any;
+  clients?: any[];
+  salon?: any;
+  services?: any[];
 };
 
-const types = createTypes(`@salon/GET @salon/UPDATE`);
+const types = createTypes(
+  `${salonTypes.GET_SALON} ${salonTypes.UPDATE_SALON} ${salonTypes.UPDATE_SERVICES_SALON}`
+);
 
 const INITIAL_STATE = Immutable<InitialStateSalon>({
   salon: {
@@ -26,6 +28,7 @@ const INITIAL_STATE = Immutable<InitialStateSalon>({
     name: "",
     phone: "",
     distance: 0,
+    isOpened: false,
   },
   services: [],
   schedule: [],
@@ -57,13 +60,19 @@ const getSalon = (state = INITIAL_STATE, action: Action) => {
         },
       });
     }
-
+    case salonTypes.UPDATE_SERVICES_SALON: {
+      return state.merge({
+        ...state,
+        services: action.services,
+      });
+    }
     default:
       return state;
   }
 };
 
 export default createReducer(INITIAL_STATE, {
-  [types["@salon/GET"]]: getSalon,
-  [types["@salon/UPDATE"]]: getSalon,
+  [types[salonTypes.GET_SALON]]: getSalon,
+  [types[salonTypes.UPDATE_SALON]]: getSalon,
+  [types[salonTypes.UPDATE_SERVICES_SALON]]: getSalon,
 });

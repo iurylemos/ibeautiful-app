@@ -1,8 +1,9 @@
+import { ServicesSalonApi } from "../api/allServicesSalonApi.interface";
 import { Salon } from "../models/salon.interface";
 
 export interface InitialStateSalon {
   salon: Salon;
-  services: any[];
+  services: ServicesSalonApi[];
   schedule: any[];
   collaborators: any[];
   scheduling: {
