@@ -6,6 +6,7 @@ import constsUtil from "../../../utils/consts.util";
 import { SalonApi } from "../../../interfaces/api/salonApi.interface";
 import {
   updateCollaboratorsSalonAction,
+  updateFormServiceSalonAction,
   updateSalonAction,
   updateScheduleSalonAction,
   updateSchedulingSalonAction,
@@ -51,6 +52,50 @@ export function* allServicesSalon() {
     }
 
     yield put(updateServicesSalonAction(res.services));
+  } catch (error) {
+    console.log("error", error);
+    const errorMessage = (error as AxiosError).message;
+    console.log("errorMessage", errorMessage);
+    alert(errorMessage);
+  }
+}
+
+export function* saveSchedulingSalon() {
+  try {
+    yield put(
+      updateFormServiceSalonAction({
+        schedulingLoading: true,
+      })
+    );
+
+    const { scheduling } = (yield select<
+      (state: { salonReducer: InitialStateSalon }) => InitialStateSalon
+    >((state) => state.salonReducer)) as InitialStateSalon;
+
+    const { data: res } = (yield call(apiService.post, "/scheduling", {
+      ...scheduling,
+      creditCard: {
+        number: "4539277550405159",
+        holderName: "Tony Stark",
+        expMonth: 3,
+        expYear: 2028,
+        cvv: "356",
+      },
+    })) as AxiosResponse<{
+      error: boolean;
+      message: string;
+    }>;
+
+    if (res.error) {
+      alert(res.message);
+      return false;
+    }
+
+    yield put(
+      updateFormServiceSalonAction({
+        schedulingLoading: false,
+      })
+    );
   } catch (error) {
     console.log("error", error);
     const errorMessage = (error as AxiosError).message;
@@ -106,4 +151,5 @@ export default all([
   takeLatest(salonTypes.GET_SALON, getSalon),
   takeLatest(salonTypes.ALL_SERVICES_SALON, allServicesSalon),
   takeLatest(salonTypes.FILTER_SCHEDULE_SALON, filterScheduleSalon),
+  takeLatest(salonTypes.SAVE_SCHEDULING_SALON, saveSchedulingSalon),
 ]);

@@ -73,3 +73,9 @@ export function updateCollaboratorsSalonAction(
     collaborators,
   };
 }
+
+export function saveSchedulingSalonAction() {
+  return {
+    type: salonTypes.SAVE_SCHEDULING_SALON,
+  };
+}
