@@ -9,6 +9,8 @@ import {
 } from "../../../interfaces/store/initialStateSalon.interface";
 import { ServicesSalonApi } from "../../../interfaces/api/allServicesSalonApi.interface";
 import { SalonApi } from "../../../interfaces/api/salonApi.interface";
+import lodash from "lodash";
+import { SchedulingDaysAvailableApiCollaborator } from "../../../interfaces/api/schedulingDaysAvailableApi.interface";
 
 type Action = {
   type: string;
@@ -18,6 +20,7 @@ type Action = {
   form?: InitialStateSalonForm;
   scheduling?: InitialStateSalonScheduling;
   schedule?: any;
+  collaborators: SchedulingDaysAvailableApiCollaborator[];
 };
 
 const types = createTypes(
@@ -26,7 +29,8 @@ const types = createTypes(
    ${salonTypes.UPDATE_SERVICES_SALON}
    ${salonTypes.UPDATE_FORM_SALON}
    ${salonTypes.UPDATE_SCHEDULE_SALON}
-   ${salonTypes.UPDATE_SCHEDULING_SALON}`
+   ${salonTypes.UPDATE_SCHEDULING_SALON}
+   ${salonTypes.UPDATE_COLLABORATORS_SALON}`
 );
 
 const INITIAL_STATE = Immutable<InitialStateSalon>({
@@ -121,6 +125,15 @@ const salonReducer = (
         });
       }
     }
+    case salonTypes.UPDATE_COLLABORATORS_SALON: {
+      return state.merge({
+        ...state,
+        collaborators: lodash.uniq([
+          ...state.collaborators,
+          ...action.collaborators,
+        ]),
+      });
+    }
     default:
       return state;
   }
@@ -133,4 +146,5 @@ export default createReducer(INITIAL_STATE, {
   [types[salonTypes.UPDATE_FORM_SALON]]: salonReducer,
   [types[salonTypes.UPDATE_SCHEDULE_SALON]]: salonReducer,
   [types[salonTypes.UPDATE_SCHEDULING_SALON]]: salonReducer,
+  [types[salonTypes.UPDATE_COLLABORATORS_SALON]]: salonReducer,
 });

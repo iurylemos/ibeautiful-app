@@ -1,22 +1,28 @@
-import { takeLatest, all, call, put } from "redux-saga/effects";
+import { takeLatest, all, call, put, select } from "redux-saga/effects";
 import { AxiosError, AxiosResponse } from "axios";
+import moment from "moment";
 import apiService from "../../../services/api.service";
 import constsUtil from "../../../utils/consts.util";
 import { SalonApi } from "../../../interfaces/api/salonApi.interface";
-import { updateSalonAction, updateServicesSalonAction } from "./actions";
+import {
+  updateCollaboratorsSalonAction,
+  updateSalonAction,
+  updateScheduleSalonAction,
+  updateSchedulingSalonAction,
+  updateServicesSalonAction,
+} from "./actions";
 import salonTypes from "./types";
 import { AllServicesSalonApi } from "../../../interfaces/api/allServicesSalonApi.interface";
+import { InitialStateSalon } from "../../../interfaces/store/initialStateSalon.interface";
+import { SchedulingDaysAvailableApi } from "../../../interfaces/api/schedulingDaysAvailableApi.interface";
+import { dateUtil } from "../../../utils/date.util";
 
 export function* getSalon() {
-  console.log("enter here? --- 1");
-
   try {
     const { data: res } = (yield call(
       apiService.get,
       `/salon/${constsUtil.salonId}`
     )) as AxiosResponse<SalonApi>;
-
-    console.log("enter here? --- 2", res);
 
     if (res.error) {
       alert(res.message);
@@ -33,15 +39,11 @@ export function* getSalon() {
 }
 
 export function* allServicesSalon() {
-  console.log("enter here? --- 1");
-
   try {
     const { data: res } = (yield call(
       apiService.get,
       `/service/salon/${constsUtil.salonId}`
     )) as AxiosResponse<AllServicesSalonApi>;
-
-    console.log("enter here? --- 2", res);
 
     if (res.error) {
       alert(res.message);
@@ -57,7 +59,51 @@ export function* allServicesSalon() {
   }
 }
 
+export function* filterScheduleSalon() {
+  try {
+    const { scheduling } = (yield select<
+      (state: { salonReducer: InitialStateSalon }) => InitialStateSalon
+    >((state) => state.salonReducer)) as InitialStateSalon;
+
+    const { data: res } = (yield call(
+      apiService.post,
+      "/scheduling/days-available",
+      {
+        ...scheduling,
+        date: moment().format("YYYY-MM-DD"),
+      }
+    )) as AxiosResponse<SchedulingDaysAvailableApi>;
+
+    console.log("enter here? --- 2", res);
+
+    if (res.error) {
+      alert(res.message);
+      return false;
+    }
+
+    yield put(updateScheduleSalonAction(res.schedule));
+    yield put(updateCollaboratorsSalonAction(res.collaborators));
+    const { hoursAvailable, date, collaboratorId } = yield call(
+      dateUtil.selectScheduling,
+      res.schedule
+    );
+
+    yield put(
+      updateSchedulingSalonAction({
+        date: moment(`${date}T${hoursAvailable[0][0]}`).format(),
+        collaboratorId,
+      })
+    );
+  } catch (error) {
+    console.log("error", error);
+    const errorMessage = (error as AxiosError).message;
+    console.log("errorMessage", errorMessage);
+    alert(errorMessage);
+  }
+}
+
 export default all([
   takeLatest(salonTypes.GET_SALON, getSalon),
   takeLatest(salonTypes.ALL_SERVICES_SALON, allServicesSalon),
+  takeLatest(salonTypes.FILTER_SCHEDULE_SALON, filterScheduleSalon),
 ]);

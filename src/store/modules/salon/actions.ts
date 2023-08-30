@@ -1,4 +1,5 @@
 import { ServicesSalonApi } from "../../../interfaces/api/allServicesSalonApi.interface";
+import { SchedulingDaysAvailableApiCollaborator } from "../../../interfaces/api/schedulingDaysAvailableApi.interface";
 import { Salon } from "../../../interfaces/models/salon.interface";
 import {
   InitialStateSalon,
@@ -51,11 +52,24 @@ export function updateSchedulingSalonAction(
   };
 }
 
-export function updateScheduleSalonAction(
-  schedule: Partial<InitialStateSalonScheduling>
-) {
+export function updateScheduleSalonAction(schedule: any[]) {
   return {
     type: salonTypes.UPDATE_SCHEDULE_SALON,
     schedule,
+  };
+}
+
+export function filterScheduleSalonAction() {
+  return {
+    type: salonTypes.FILTER_SCHEDULE_SALON,
+  };
+}
+
+export function updateCollaboratorsSalonAction(
+  collaborators: SchedulingDaysAvailableApiCollaborator[]
+) {
+  return {
+    type: salonTypes.UPDATE_COLLABORATORS_SALON,
+    collaborators,
   };
 }

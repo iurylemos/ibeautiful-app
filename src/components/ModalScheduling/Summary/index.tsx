@@ -2,21 +2,14 @@ import React from "react";
 import { Text, Title, Spacer, Box, Cover } from "../../../styles";
 import themeConfig from "../../../config/theme.config";
 import colorsUtil from "../../../utils/colors.util";
-import { InitialStateSalonScheduling } from "../../../interfaces/store/initialStateSalon.interface";
 import { ServicesSalonApi } from "../../../interfaces/api/allServicesSalonApi.interface";
 import { awsUtil } from "../../../utils/aws.util";
 
 type Props = {
-  scheduling: InitialStateSalonScheduling;
-  services: ServicesSalonApi[];
+  service: ServicesSalonApi;
 };
 
-const ModalSchedulingSummary: React.FC<Props> = ({
-  scheduling,
-  services = [],
-}): JSX.Element => {
-  const service = services.filter((s) => s._id === scheduling.serviceId)[0];
-
+const ModalSchedulingSummary: React.FC<Props> = ({ service }): JSX.Element => {
   return (
     <Box
       align="center"

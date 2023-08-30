@@ -14,13 +14,46 @@ import { Box, Button } from "../../styles";
 import themeConfig from "../../config/theme.config";
 import { useSelector } from "react-redux";
 import { InitialStateSalon } from "../../interfaces/store/initialStateSalon.interface";
+import { ServicesSalonApi } from "../../interfaces/api/allServicesSalonApi.interface";
+import { dateUtil } from "../../utils/date.util";
+import moment from "moment";
 
 const ModalScheduling: React.FC = (): JSX.Element => {
   const [currentSnap, setCurrentSnap] = useState<number>(0);
-  const { form, scheduling, services } = useSelector(
+  const { form, scheduling, services, schedule } = useSelector(
     (state: { salonReducer: InitialStateSalon }) => state.salonReducer
   );
   const sheetRef = useRef<BottomSheet>(null);
+
+  const currentService: ServicesSalonApi = services.length
+    ? services.filter((s) => s._id === scheduling.serviceId)[0] ?? {
+        title: "",
+        __v: 0,
+        _id: "",
+        commission: 0,
+        description: "",
+        duration: "",
+        files: [],
+        price: 0,
+        recurrence: 0,
+        registerData: "",
+        salonId: "",
+        status: "",
+      }
+    : {
+        title: "",
+        __v: 0,
+        _id: "",
+        commission: 0,
+        description: "",
+        duration: "",
+        files: [],
+        price: 0,
+        recurrence: 0,
+        registerData: "",
+        salonId: "",
+        status: "",
+      };
 
   useEffect(() => {
     setCurrentSnap(form.modalScheduling);
@@ -29,6 +62,15 @@ const ModalScheduling: React.FC = (): JSX.Element => {
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
   }, []);
+
+  const dateSelected = moment(scheduling.date).format("YYYY-MM-DD");
+  const hourSelected = moment(scheduling.date).format("HH:mm");
+
+  const { hoursAvailable, collaboratorsDay } = dateUtil.selectScheduling(
+    schedule,
+    dateSelected,
+    scheduling.collaboratorId
+  );
 
   return (
     <BottomSheet
@@ -46,8 +88,14 @@ const ModalScheduling: React.FC = (): JSX.Element => {
           stickyHeaderIndices={[0]}
         >
           <ModalSchedulingHeader />
-          <ModalSchedulingSummary scheduling={scheduling} services={services} />
-          <ModalSchedulingDateTime />
+          <ModalSchedulingSummary service={currentService} />
+          <ModalSchedulingDateTime
+            service={currentService}
+            schedule={schedule}
+            dateSelected={dateSelected}
+            hourSelected={hourSelected}
+            hoursAvailable={hoursAvailable}
+          />
           <ModalSchedulingExperts />
           <ModalSchedulingPayment />
           <Box hasPadding>

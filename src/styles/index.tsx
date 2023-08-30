@@ -11,6 +11,7 @@ import {
 } from "react-native-paper";
 import { DefaultColors } from "../interfaces/defaultColors.interface";
 import colorsUtil from "../utils/colors.util";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 type CoverProps = {
   width?: string;
@@ -153,7 +154,7 @@ export const Box = styled.View<BoxProps>`
     "transparent"};
 `;
 
-export const Touchable = styled.TouchableOpacity<TouchableProps>`
+export const Touchable = styled(TouchableOpacity)<TouchableProps>`
   flex-direction: ${(props) => props.direction || "row"};
   justify-content: ${(props) => props.justify || "flex-start"};
   align-items: ${(props) => props.align || "flex-start"};

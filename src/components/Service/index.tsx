@@ -4,7 +4,10 @@ import { ServicesSalonApi } from "../../interfaces/api/allServicesSalonApi.inter
 import moment from "moment";
 import { awsUtil } from "../../utils/aws.util";
 import { useDispatch } from "react-redux";
-import { updateSchedulingSalonAction } from "../../store/modules/salon/actions";
+import {
+  filterScheduleSalonAction,
+  updateSchedulingSalonAction,
+} from "../../store/modules/salon/actions";
 
 type Props = {
   service: ServicesSalonApi;
@@ -19,13 +22,14 @@ const Service: React.FC<Props> = ({ service }): JSX.Element => {
       hasPadding
       align="center"
       background="light"
-      onPress={() =>
+      onPress={() => {
         dispatch(
           updateSchedulingSalonAction({
             serviceId: service._id,
           })
-        )
-      }
+        );
+        dispatch(filterScheduleSalonAction());
+      }}
     >
       <Cover
         source={
