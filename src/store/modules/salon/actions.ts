@@ -1,6 +1,10 @@
 import { ServicesSalonApi } from "../../../interfaces/api/allServicesSalonApi.interface";
 import { Salon } from "../../../interfaces/models/salon.interface";
-import { InitialStateSalonForm } from "../../../interfaces/store/initialStateSalon.interface";
+import {
+  InitialStateSalon,
+  InitialStateSalonForm,
+  InitialStateSalonScheduling,
+} from "../../../interfaces/store/initialStateSalon.interface";
 import salonTypes from "./types";
 
 export function getSalonAction() {
@@ -30,10 +34,28 @@ export function updateServicesSalonAction(services: ServicesSalonApi[]) {
 }
 
 export function updateFormServiceSalonAction(
-  payload: Partial<InitialStateSalonForm>
+  form: Partial<InitialStateSalonForm>
 ) {
   return {
     type: salonTypes.UPDATE_FORM_SALON,
-    payload,
+    form,
+  };
+}
+
+export function updateSchedulingSalonAction(
+  scheduling: Partial<InitialStateSalonScheduling>
+) {
+  return {
+    type: salonTypes.UPDATE_SCHEDULING_SALON,
+    scheduling,
+  };
+}
+
+export function updateScheduleSalonAction(
+  schedule: Partial<InitialStateSalonScheduling>
+) {
+  return {
+    type: salonTypes.UPDATE_SCHEDULE_SALON,
+    schedule,
   };
 }

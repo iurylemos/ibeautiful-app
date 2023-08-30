@@ -1,16 +1,32 @@
 import React from "react";
-import { Text, Box, Touchable, Cover, Title, Button } from "../../styles";
+import { Text, Box, Touchable, Cover, Button } from "../../styles";
 import { ServicesSalonApi } from "../../interfaces/api/allServicesSalonApi.interface";
 import moment from "moment";
 import { awsUtil } from "../../utils/aws.util";
+import { useDispatch } from "react-redux";
+import { updateSchedulingSalonAction } from "../../store/modules/salon/actions";
 
 type Props = {
   service: ServicesSalonApi;
 };
 
 const Service: React.FC<Props> = ({ service }): JSX.Element => {
+  const dispatch = useDispatch();
+
   return (
-    <Touchable height="100px" hasPadding align="center" background="light">
+    <Touchable
+      height="100px"
+      hasPadding
+      align="center"
+      background="light"
+      onPress={() =>
+        dispatch(
+          updateSchedulingSalonAction({
+            serviceId: service._id,
+          })
+        )
+      }
+    >
       <Cover
         source={
           service.files.length

@@ -23,10 +23,6 @@ const Header = (): JSX.Element => {
   );
 
   const width = Dimensions.get("window").width;
-  const source: ImageSourcePropType = {
-    uri: "https://s2.glbimg.com/Ha2q-YYa3pCWtwM4E51zi_p-POI=/940x523/e.glbimg.com/og/ed/f/original/2019/02/20/blow-dry-bar-del-mar-chairs-counter-853427.jpg",
-  };
-  console.log("salon", salon);
 
   return (
     <>

@@ -1,5 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import BottomSheet, {
   BottomSheetScrollView,
   BottomSheetView,
@@ -13,11 +12,19 @@ import ModalSchedulingExpertsPicker from "./Experts/Picker";
 import ModalSchedulingPayment from "./Payment";
 import { Box, Button } from "../../styles";
 import themeConfig from "../../config/theme.config";
+import { useSelector } from "react-redux";
+import { InitialStateSalon } from "../../interfaces/store/initialStateSalon.interface";
 
 const ModalScheduling: React.FC = (): JSX.Element => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  // hooks
+  const [currentSnap, setCurrentSnap] = useState<number>(0);
+  const { form } = useSelector(
+    (state: { salonReducer: InitialStateSalon }) => state.salonReducer
+  );
   const sheetRef = useRef<BottomSheet>(null);
+
+  useEffect(() => {
+    setCurrentSnap(form.modalScheduling);
+  }, [form.modalScheduling]);
 
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
@@ -27,7 +34,7 @@ const ModalScheduling: React.FC = (): JSX.Element => {
     <BottomSheet
       ref={sheetRef}
       contentHeight={1}
-      index={openModal ? 2 : 1}
+      index={currentSnap}
       snapPoints={[1, 90, Dimensions.get("window").height - 30]}
       onChange={handleSheetChanges}
     >

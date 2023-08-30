@@ -5,6 +5,7 @@ import constsUtil from "../../../utils/consts.util";
 import {
   InitialStateSalon,
   InitialStateSalonForm,
+  InitialStateSalonScheduling,
 } from "../../../interfaces/store/initialStateSalon.interface";
 import { ServicesSalonApi } from "../../../interfaces/api/allServicesSalonApi.interface";
 import { SalonApi } from "../../../interfaces/api/salonApi.interface";
@@ -14,11 +15,18 @@ type Action = {
   clients?: any[];
   salon?: SalonApi;
   services?: ServicesSalonApi[];
-  payload: InitialStateSalonForm;
+  form?: InitialStateSalonForm;
+  scheduling?: InitialStateSalonScheduling;
+  schedule?: any;
 };
 
 const types = createTypes(
-  `${salonTypes.GET_SALON} ${salonTypes.UPDATE_SALON} ${salonTypes.UPDATE_SERVICES_SALON} ${salonTypes.UPDATE_FORM_SALON}`
+  `${salonTypes.GET_SALON}
+   ${salonTypes.UPDATE_SALON}
+   ${salonTypes.UPDATE_SERVICES_SALON}
+   ${salonTypes.UPDATE_FORM_SALON}
+   ${salonTypes.UPDATE_SCHEDULE_SALON}
+   ${salonTypes.UPDATE_SCHEDULING_SALON}`
 );
 
 const INITIAL_STATE = Immutable<InitialStateSalon>({
@@ -42,9 +50,9 @@ const INITIAL_STATE = Immutable<InitialStateSalon>({
   scheduling: {
     clientId: constsUtil.clientId,
     salonId: constsUtil.salonId,
-    service: null,
-    collaboratorId: null,
-    date: null,
+    serviceId: "",
+    collaboratorId: "",
+    date: "",
   },
   form: {
     inputFilter: "",
@@ -80,9 +88,38 @@ const salonReducer = (
         ...state,
         form: {
           ...state.form,
-          ...action.payload,
+          ...action.form,
         },
       });
+    }
+    case salonTypes.UPDATE_SCHEDULE_SALON: {
+      return state.merge({
+        ...state,
+        schedule: [...state.schedule, ...action.schedule],
+      });
+    }
+    case salonTypes.UPDATE_SCHEDULING_SALON: {
+      if (action.scheduling?.serviceId) {
+        return state.merge({
+          ...state,
+          form: {
+            ...state.form,
+            modalScheduling: 2,
+          },
+          scheduling: {
+            ...state.scheduling,
+            ...action.scheduling,
+          },
+        });
+      } else {
+        return state.merge({
+          ...state,
+          scheduling: {
+            ...state.scheduling,
+            ...action.scheduling,
+          },
+        });
+      }
     }
     default:
       return state;
@@ -94,4 +131,6 @@ export default createReducer(INITIAL_STATE, {
   [types[salonTypes.UPDATE_SALON]]: salonReducer,
   [types[salonTypes.UPDATE_SERVICES_SALON]]: salonReducer,
   [types[salonTypes.UPDATE_FORM_SALON]]: salonReducer,
+  [types[salonTypes.UPDATE_SCHEDULE_SALON]]: salonReducer,
+  [types[salonTypes.UPDATE_SCHEDULING_SALON]]: salonReducer,
 });

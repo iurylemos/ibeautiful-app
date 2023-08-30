@@ -6,13 +6,7 @@ export interface InitialStateSalon {
   services: ServicesSalonApi[];
   schedule: any[];
   collaborators: any[];
-  scheduling: {
-    clientId: string;
-    salonId: string;
-    service?: any;
-    collaboratorId?: any;
-    date?: any;
-  };
+  scheduling: InitialStateSalonScheduling;
   form: InitialStateSalonForm;
 }
 
@@ -22,4 +16,12 @@ export interface InitialStateSalonForm {
   modalEspecialty: boolean;
   modalScheduling: number;
   schedulingLoading: boolean;
+}
+
+export interface InitialStateSalonScheduling {
+  clientId: string;
+  salonId: string;
+  serviceId?: string;
+  collaboratorId?: string;
+  date?: string;
 }
