@@ -1,5 +1,6 @@
 import { ServicesSalonApi } from "../../../interfaces/api/allServicesSalonApi.interface";
 import { Salon } from "../../../interfaces/models/salon.interface";
+import { InitialStateSalonForm } from "../../../interfaces/store/initialStateSalon.interface";
 import salonTypes from "./types";
 
 export function getSalonAction() {
@@ -25,5 +26,14 @@ export function updateServicesSalonAction(services: ServicesSalonApi[]) {
   return {
     type: salonTypes.UPDATE_SERVICES_SALON,
     services,
+  };
+}
+
+export function updateFormServiceSalonAction(
+  payload: Partial<InitialStateSalonForm>
+) {
+  return {
+    type: salonTypes.UPDATE_FORM_SALON,
+    payload,
   };
 }

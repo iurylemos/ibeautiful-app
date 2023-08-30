@@ -12,10 +12,12 @@ import {
 } from "../../styles";
 import themeConfig from "../../config/theme.config";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { InitialStateSalon } from "../../interfaces/store/initialStateSalon.interface";
+import { updateFormServiceSalonAction } from "../../store/modules/salon/actions";
 
 const Header = (): JSX.Element => {
+  const dispatch = useDispatch();
   const { salon, services } = useSelector(
     (state: { salonReducer: InitialStateSalon }) => state.salonReducer
   );
@@ -111,7 +113,18 @@ const Header = (): JSX.Element => {
       </Box>
       <Box hasPadding direction="column" background="light" spacing="10px 0 0">
         <Title small>Serviços ({services.length})</Title>
-        <TextInput placeholder="Digite o nome do serviço..." />
+        <TextInput
+          placeholder="Digite o nome do serviço..."
+          onChangeText={(val) =>
+            dispatch(updateFormServiceSalonAction({ inputFilter: val }))
+          }
+          onFocus={() =>
+            dispatch(updateFormServiceSalonAction({ inputFilterFocus: true }))
+          }
+          onBlur={() =>
+            dispatch(updateFormServiceSalonAction({ inputFilterFocus: false }))
+          }
+        />
       </Box>
     </>
   );

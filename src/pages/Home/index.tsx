@@ -15,9 +15,21 @@ import { InitialStateSalon } from "../../interfaces/store/initialStateSalon.inte
 const Home: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
 
-  const { services } = useSelector(
+  const { services, form } = useSelector(
     (state: { salonReducer: InitialStateSalon }) => state.salonReducer
   );
+
+  const finalServices =
+    form.inputFilter.length > 0
+      ? services.filter((service) => {
+          const title = service.title.toLowerCase().trim();
+          const arrSearch = form.inputFilter.toLowerCase().trim().split(" ");
+
+          return arrSearch.every((word) => title.search(word) !== -1);
+        })
+      : services;
+
+  console.log("form", form);
 
   useEffect(() => {
     dispatch(getSalonAction());
@@ -32,7 +44,7 @@ const Home: React.FC = (): JSX.Element => {
         style={{
           backgroundColor: colorsUtil.toAlpha(themeConfig.colors.muted, 10),
         }}
-        data={services}
+        data={finalServices}
         ListHeaderComponent={Header}
         renderItem={({ item }) => <Service service={item} key={item._id} />}
         keyExtractor={(item) => item._id}

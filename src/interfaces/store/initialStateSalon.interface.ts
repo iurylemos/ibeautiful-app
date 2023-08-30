@@ -13,11 +13,13 @@ export interface InitialStateSalon {
     collaboratorId?: any;
     date?: any;
   };
-  form: {
-    inputFilter: string;
-    inputFilterFocus: boolean;
-    modalEspecialty: boolean;
-    modalScheduling: number;
-    schedulingLoading: boolean;
-  };
+  form: InitialStateSalonForm;
+}
+
+export interface InitialStateSalonForm {
+  inputFilter: string;
+  inputFilterFocus: boolean;
+  modalEspecialty: boolean;
+  modalScheduling: number;
+  schedulingLoading: boolean;
 }

@@ -2,17 +2,23 @@ import { createReducer, createTypes } from "reduxsauce";
 import Immutable from "seamless-immutable";
 import salonTypes from "./types";
 import constsUtil from "../../../utils/consts.util";
-import { InitialStateSalon } from "../../../interfaces/store/initialStateSalon.interface";
+import {
+  InitialStateSalon,
+  InitialStateSalonForm,
+} from "../../../interfaces/store/initialStateSalon.interface";
+import { ServicesSalonApi } from "../../../interfaces/api/allServicesSalonApi.interface";
+import { SalonApi } from "../../../interfaces/api/salonApi.interface";
 
 type Action = {
   type: string;
   clients?: any[];
-  salon?: any;
-  services?: any[];
+  salon?: SalonApi;
+  services?: ServicesSalonApi[];
+  payload: InitialStateSalonForm;
 };
 
 const types = createTypes(
-  `${salonTypes.GET_SALON} ${salonTypes.UPDATE_SALON} ${salonTypes.UPDATE_SERVICES_SALON}`
+  `${salonTypes.GET_SALON} ${salonTypes.UPDATE_SALON} ${salonTypes.UPDATE_SERVICES_SALON} ${salonTypes.UPDATE_FORM_SALON}`
 );
 
 const INITIAL_STATE = Immutable<InitialStateSalon>({
@@ -49,7 +55,10 @@ const INITIAL_STATE = Immutable<InitialStateSalon>({
   },
 });
 
-const getSalon = (state = INITIAL_STATE, action: Action) => {
+const salonReducer = (
+  state = INITIAL_STATE,
+  action: Action
+): Immutable.ImmutableObject<InitialStateSalon> => {
   switch (action.type) {
     case salonTypes.UPDATE_SALON: {
       return state.merge({
@@ -66,13 +75,23 @@ const getSalon = (state = INITIAL_STATE, action: Action) => {
         services: action.services,
       });
     }
+    case salonTypes.UPDATE_FORM_SALON: {
+      return state.merge({
+        ...state,
+        form: {
+          ...state.form,
+          ...action.payload,
+        },
+      });
+    }
     default:
       return state;
   }
 };
 
 export default createReducer(INITIAL_STATE, {
-  [types[salonTypes.GET_SALON]]: getSalon,
-  [types[salonTypes.UPDATE_SALON]]: getSalon,
-  [types[salonTypes.UPDATE_SERVICES_SALON]]: getSalon,
+  [types[salonTypes.GET_SALON]]: salonReducer,
+  [types[salonTypes.UPDATE_SALON]]: salonReducer,
+  [types[salonTypes.UPDATE_SERVICES_SALON]]: salonReducer,
+  [types[salonTypes.UPDATE_FORM_SALON]]: salonReducer,
 });
