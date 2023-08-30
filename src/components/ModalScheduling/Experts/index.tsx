@@ -1,8 +1,26 @@
 import React from "react";
-import { Cover, Box, Text, Button } from "../../../styles";
+import { Cover, Box, Text, Button, Touchable } from "../../../styles";
 import themeConfig from "../../../config/theme.config";
+import { SchedulingDaysAvailableApiCollaborator } from "../../../interfaces/api/schedulingDaysAvailableApi.interface";
+import { InitialStateSalonScheduling } from "../../../interfaces/store/initialStateSalon.interface";
+import { useDispatch } from "react-redux";
+import { updateFormServiceSalonAction } from "../../../store/modules/salon/actions";
 
-const ModalSchedulingExperts: React.FC = (): JSX.Element => {
+type Props = {
+  collaborators: SchedulingDaysAvailableApiCollaborator[];
+  scheduling: InitialStateSalonScheduling;
+};
+
+const ModalSchedulingExperts: React.FC<Props> = ({
+  collaborators,
+  scheduling,
+}): JSX.Element => {
+  const dispatch = useDispatch();
+
+  const collaborator = collaborators.filter(
+    (c) => c._id === scheduling.collaboratorId
+  )[0] ?? { photo: "", name: "" };
+
   return (
     <>
       <Text bold color="dark" hasPadding removePaddingBottom>
@@ -14,20 +32,30 @@ const ModalSchedulingExperts: React.FC = (): JSX.Element => {
             width="45px"
             height="45px"
             circle
-            source="https://img.freepik.com/fotos-premium/cabeleireiro-profissional-fica-em-um-salao-de-beleza-com-um-secador-de-cabelo-na-mao_2221-4638.jpg"
+            source={collaborator.photo}
           />
-          <Text small>Juliana Righi</Text>
+          <Text small>{collaborator.name}</Text>
         </Box>
         <Box>
-          <Button
-            uppercase={false}
-            textColor={themeConfig.colors.muted}
-            background={themeConfig.colors.light}
-            mode="contained"
-            block
+          <Touchable
+            onPress={() =>
+              dispatch(
+                updateFormServiceSalonAction({
+                  modalEspecialty: true,
+                })
+              )
+            }
           >
-            Trocar Especialista
-          </Button>
+            <Button
+              uppercase={false}
+              textColor={themeConfig.colors.muted}
+              background={themeConfig.colors.light}
+              mode="contained"
+              block
+            >
+              Trocar Especialista
+            </Button>
+          </Touchable>
         </Box>
       </Box>
     </>

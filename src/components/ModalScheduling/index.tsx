@@ -20,7 +20,7 @@ import moment from "moment";
 
 const ModalScheduling: React.FC = (): JSX.Element => {
   const [currentSnap, setCurrentSnap] = useState<number>(0);
-  const { form, scheduling, services, schedule } = useSelector(
+  const { form, scheduling, services, schedule, collaborators } = useSelector(
     (state: { salonReducer: InitialStateSalon }) => state.salonReducer
   );
   const sheetRef = useRef<BottomSheet>(null);
@@ -96,7 +96,10 @@ const ModalScheduling: React.FC = (): JSX.Element => {
             hourSelected={hourSelected}
             hoursAvailable={hoursAvailable}
           />
-          <ModalSchedulingExperts />
+          <ModalSchedulingExperts
+            collaborators={collaborators}
+            scheduling={scheduling}
+          />
           <ModalSchedulingPayment />
           <Box hasPadding>
             <Button
@@ -110,7 +113,14 @@ const ModalScheduling: React.FC = (): JSX.Element => {
             </Button>
           </Box>
         </BottomSheetScrollView>
-        <ModalSchedulingExpertsPicker />
+        <ModalSchedulingExpertsPicker
+          isVisible={form.modalEspecialty}
+          collaborators={collaborators}
+          scheduling={scheduling}
+          services={services}
+          hourSelected={hourSelected}
+          collaboratorsDay={collaboratorsDay}
+        />
       </BottomSheetView>
     </BottomSheet>
   );
