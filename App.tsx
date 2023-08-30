@@ -1,7 +1,6 @@
 import { useCallback } from "react";
-import { View } from "react-native";
 import Home from "./src/pages/Home";
-import { Provider as StoreProvider } from "react-redux";
+import { Provider as StoreProvider, connect } from "react-redux";
 import { Provider as PaperProvider } from "react-native-paper";
 import store from "./src/store";
 import { useFonts } from "expo-font";
@@ -35,15 +34,15 @@ const App = (): JSX.Element => {
   }
 
   return (
-    <StoreProvider store={store}>
-      <PaperProvider>
-        <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
-          <BottomSheetModalProvider>
+    <PaperProvider>
+      <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
+        <BottomSheetModalProvider>
+          <StoreProvider store={store}>
             <Home />
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
-      </PaperProvider>
-    </StoreProvider>
+          </StoreProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </PaperProvider>
   );
 };
 

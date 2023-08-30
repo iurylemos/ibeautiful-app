@@ -2,6 +2,7 @@ import { createReducer, createActions } from "reduxsauce";
 import Immutable from "seamless-immutable";
 import salonTypes from "./types";
 import constsUtil from "../../../utils/consts.util";
+import { InitialStateSalon } from "../../../interfaces/store/initialStateSalon.interface";
 
 type Action = {
   type: string;
@@ -10,8 +11,21 @@ type Action = {
   payload: any;
 };
 
-const INITIAL_STATE = Immutable({
-  salon: {},
+export const { Types, Creators } = createActions({
+  getSalon: [],
+});
+
+const INITIAL_STATE = Immutable<InitialStateSalon>({
+  salon: {
+    _id: "",
+    address: "",
+    cover: "",
+    geo: {
+      coordinates: [],
+    },
+    name: "",
+    phone: "",
+  },
   services: [],
   schedule: [],
   collaborators: [],
@@ -31,17 +45,29 @@ const INITIAL_STATE = Immutable({
   },
 });
 
-const helloWorld = (state = INITIAL_STATE, action: Action) => {
-  return state.merge({
-    salon: {
-      ...state.salon,
-      ...action.salon,
-    },
-  });
+const getSalon = (state = INITIAL_STATE, action: Action) => {
+  console.log("state?", state);
+  console.log("action?", action);
+
+  switch (action.type) {
+    case salonTypes.UPDATE_SALON: {
+      return state.merge({
+        ...state,
+        salon: {
+          ...state.salon,
+          ...action.salon,
+        },
+      });
+    }
+
+    default:
+      return state;
+  }
 };
 
-const salonReducer = createReducer(INITIAL_STATE, {
-  [salonTypes.UPDATE_SALON]: helloWorld,
+export default createReducer(INITIAL_STATE, {
+  [salonTypes.GET_SALON]: getSalon,
+  [salonTypes.UPDATE_SALON]: getSalon,
 });
 
 // function salonReducer(state = INITIAL_STATE, action: Action) {
@@ -61,5 +87,3 @@ const salonReducer = createReducer(INITIAL_STATE, {
 //       return state;
 //   }
 // }
-
-export default salonReducer;

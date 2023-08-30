@@ -12,16 +12,23 @@ import {
 } from "../../styles";
 import themeConfig from "../../config/theme.config";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useSelector } from "react-redux";
+import { InitialStateSalon } from "../../interfaces/store/initialStateSalon.interface";
 
 const Header = (): JSX.Element => {
+  const { salon } = useSelector(
+    (state: { salonReducer: InitialStateSalon }) => state.salonReducer
+  );
+
   const width = Dimensions.get("window").width;
   const source: ImageSourcePropType = {
     uri: "https://s2.glbimg.com/Ha2q-YYa3pCWtwM4E51zi_p-POI=/940x523/e.glbimg.com/og/ed/f/original/2019/02/20/blow-dry-bar-del-mar-chairs-counter-853427.jpg",
   };
+  console.log("salon", salon);
 
   return (
     <>
-      <Cover source={source} width={`${width}px`} height="200px">
+      <Cover source={salon.cover} width={`${width}px`} height="200px">
         <GradientView
           colors={[themeConfig.colors.dark, "transparent"]}
           hasPadding

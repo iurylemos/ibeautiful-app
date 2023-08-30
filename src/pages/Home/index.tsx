@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList } from "react-native";
 import Header from "../../components/Header";
 import themeConfig from "../../config/theme.config";
 import colorsUtil from "../../utils/colors.util";
 import Service from "../../components/Service";
 import ModalScheduling from "../../components/ModalScheduling";
+import { useDispatch, useSelector } from "react-redux";
+import { getSalonAction } from "../../store/modules/salon/actions";
 
 const Home: React.FC = (): JSX.Element => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSalonAction());
+  }, []);
+
   return (
     <>
       <FlatList
