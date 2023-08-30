@@ -26,22 +26,17 @@ const ModalScheduling: React.FC = (): JSX.Element => {
   return (
     <BottomSheet
       ref={sheetRef}
-      contentHeight={2}
+      contentHeight={1}
       index={openModal ? 2 : 1}
       snapPoints={[1, 90, Dimensions.get("window").height - 30]}
       onChange={handleSheetChanges}
-      enableOverDrag={false}
-      // enableContentPanningGesture={false}
-      enablePanDownToClose={false}
     >
-      <BottomSheetView enableFooterMarginAdjustment>
+      <BottomSheetView>
         <BottomSheetScrollView
           contentContainerStyle={{
             backgroundColor: "#fff",
           }}
-          scrollToOverflowEnabled={true}
           stickyHeaderIndices={[0]}
-          showsVerticalScrollIndicator
         >
           <ModalSchedulingHeader />
           <ModalSchedulingSummary />

@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,7 +38,9 @@ const App = (): JSX.Element => {
     <StoreProvider store={store}>
       <PaperProvider>
         <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
-          <Home />
+          <BottomSheetModalProvider>
+            <Home />
+          </BottomSheetModalProvider>
         </GestureHandlerRootView>
       </PaperProvider>
     </StoreProvider>
