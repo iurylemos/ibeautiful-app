@@ -1,4 +1,4 @@
-import { ImageSourcePropType, Dimensions } from "react-native";
+import { ImageSourcePropType, Dimensions, Linking } from "react-native";
 import {
   Cover,
   GradientView,
@@ -48,13 +48,26 @@ const Header = (): JSX.Element => {
             direction="column"
             align="center"
             spacing="0px 10px 0 0"
+            onPress={() => Linking.openURL(`tel:${salon.phone}`)}
           >
             <Icon name="phone" size={24} color={themeConfig.colors.muted} />
             <Text small spacing="10px 0 0">
               Ligar
             </Text>
           </Touchable>
-          <Touchable width="50px" direction="column" align="center">
+          <Touchable
+            width="50px"
+            direction="column"
+            align="center"
+            onPress={() => {
+              const coords =
+                salon.geo.coordinates[0] + "," + salon.geo.coordinates[1];
+
+              Linking.openURL(
+                `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${coords}`
+              );
+            }}
+          >
             <Icon
               name="map-marker"
               size={24}
