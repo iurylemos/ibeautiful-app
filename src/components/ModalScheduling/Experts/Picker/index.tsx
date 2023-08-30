@@ -7,7 +7,10 @@ import moment from "moment";
 
 import { Text, Box, Touchable, Cover } from "../../../../styles";
 import themeConfig from "../../../../config/theme.config";
-import { updateFormServiceSalonAction } from "../../../../store/modules/salon/actions";
+import {
+  updateFormServiceSalonAction,
+  updateSchedulingSalonAction,
+} from "../../../../store/modules/salon/actions";
 import { SchedulingDaysAvailableApiCollaborator } from "../../../../interfaces/api/schedulingDaysAvailableApi.interface";
 import { InitialStateSalonScheduling } from "../../../../interfaces/store/initialStateSalon.interface";
 import { ServicesSalonApi } from "../../../../interfaces/api/allServicesSalonApi.interface";
@@ -80,6 +83,18 @@ const ModalSchedulingExpertsPicker: React.FC<Props> = ({
                 direction="column"
                 align="center"
                 width={`${(Dimensions.get("screen").width - 80) / 4}px`}
+                onPress={() => {
+                  dispatch(
+                    updateSchedulingSalonAction({
+                      collaboratorId: collaborator._id,
+                    })
+                  );
+                  dispatch(
+                    updateFormServiceSalonAction({
+                      modalEspecialty: false,
+                    })
+                  );
+                }}
               >
                 <Cover
                   height="45px"
