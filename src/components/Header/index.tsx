@@ -36,7 +36,9 @@ const Header = (): JSX.Element => {
         >
           <Badge color="success">ABERTO</Badge>
           <Title color="light">{salon.name}</Title>
-          <Text color="light">Porto Alegre • 5.2kms</Text>
+          <Text color="light">
+            {salon.address.city} • {salon.distance.toFixed(2)}kms
+          </Text>
         </GradientView>
       </Cover>
       <Box background="light" align="center" width={`${width}px`}>

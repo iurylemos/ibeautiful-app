@@ -22,7 +22,7 @@ export function* getSalon() {
       return false;
     }
 
-    yield put(updateSalonAction(res.salon));
+    yield put(updateSalonAction({ ...res.salon, distance: res.distance }));
   } catch (error) {
     console.log("error", error);
     const errorMessage = (error as AxiosError).message;

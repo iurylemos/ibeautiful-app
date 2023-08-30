@@ -16,13 +16,16 @@ const types = createTypes(`@salon/GET @salon/UPDATE`);
 const INITIAL_STATE = Immutable<InitialStateSalon>({
   salon: {
     _id: "",
-    address: "",
+    address: {
+      city: "",
+    },
     cover: "",
     geo: {
       coordinates: [],
     },
     name: "",
     phone: "",
+    distance: 0,
   },
   services: [],
   schedule: [],

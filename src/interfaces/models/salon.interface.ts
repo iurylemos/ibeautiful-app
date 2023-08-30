@@ -5,9 +5,12 @@ export interface Salon {
   name: string;
   cover: string;
   phone: string;
+  distance: number;
 }
 
-interface Address {}
+interface Address {
+  city: string;
+}
 
 interface Geo {
   coordinates: number[];
