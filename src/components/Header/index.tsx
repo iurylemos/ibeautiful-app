@@ -35,7 +35,7 @@ const Header = (): JSX.Element => {
           justify="flex-end"
         >
           <Badge color="success">ABERTO</Badge>
-          <Title color="light">Salão Teste</Title>
+          <Title color="light">{salon.name}</Title>
           <Text color="light">Porto Alegre • 5.2kms</Text>
         </GradientView>
       </Cover>
